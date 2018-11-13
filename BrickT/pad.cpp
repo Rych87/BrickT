@@ -6,11 +6,18 @@ pad::pad()
 {
 	_X = 0;
 	_Y = 0;
-	_S = 50;
+	_S = 0;
 	_A = 0;
 	_MaxS = 350;
 	_L=70;
 	_H=5;
+
+	_BorderLeft = _BorderRight = 0;
+}
+
+void pad::setBoundary(int left, int right) {
+	_BorderLeft = left;
+	_BorderRight = right;
 }
 
 
@@ -24,11 +31,7 @@ float pad::GetSpeed()
 }
 void pad::UpdatePosition(int Step, float DeltaTime,int left, int right)
 {
-	//SetSpeed(_S+_A);
-	if((_X>=left+1 && _S<=0) || (_X+_L <=right-1 && _S>=0))
 		_X+=_S*DeltaTime/Step;
-	else
-		_S=0;
 }
 void pad::SetA(int x)
 {
@@ -50,12 +53,16 @@ void pad::set(int x, int y)
 
 void pad::SetSpeed(float speed)
 {
-	if (speed <= _MaxS && speed>=-_MaxS)
-		_S = speed;
-	else if (speed>_MaxS)
-		_S = _MaxS;
-	else
-		_S = -_MaxS;
+		if (speed > _MaxS)
+			speed = _MaxS;
+		if (speed < -_MaxS)
+			speed = -_MaxS;
+		if (speed < 0 && checkLeftBoundary())
+			_S = speed;
+		else if (speed > 0 && checkRightBoundary())
+			_S = speed;
+		else
+			_S = 0;
 }
 
 float pad::GetLeftX()
@@ -84,4 +91,16 @@ void pad::draw(ID2D1HwndRenderTarget * pRT)
 	pRT->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Black, 1.0f), &Brush);
 	pRT->DrawRectangle(D2D1::RectF(_X, _Y, _X+_L, _Y+_H), Brush, 1.0, 0);
 	Brush->Release();
+}
+
+bool pad::checkLeftBoundary() {
+	if (_X >= _BorderLeft + 1)
+		return true;
+	return false;
+}
+
+bool pad::checkRightBoundary() {
+	if (_X + _L <= _BorderRight)
+		return true;
+	return false;
 }

@@ -10,6 +10,7 @@ public:
 	~pad();
 	void UpdatePosition(int,float,int,int);
 	void SetSpeed(float);
+	void setBoundary(int,int);
 	float GetSpeed();
 	void SetA(int);
 	void draw(HDC);
@@ -23,5 +24,9 @@ private:
 	float _MaxS;
 	int _L;
 	int _H;
+	int _BorderLeft;
+	int _BorderRight;
+	bool checkLeftBoundary();
+	bool checkRightBoundary();
 };
 

@@ -86,14 +86,6 @@ LRESULT CALLBACK App::WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 	BrickGame * Ptr;
 	HDC hdc;
 	static WindowsTimer f;
-	if (uMsg == WM_CREATE){
-		LPCREATESTRUCT pcs = (LPCREATESTRUCT)lParam;
-		Ptr = (BrickGame*)pcs->lpCreateParams;
-        SetWindowLongPtrW(hwnd,GWLP_USERDATA,PtrToUlong(Ptr));
-		return 0;
-    }
-    else
-    {
         Ptr = reinterpret_cast<BrickGame *>(static_cast<LONG_PTR>(GetWindowLongPtrW(hwnd,GWLP_USERDATA)));
 
 		switch (uMsg)
@@ -117,6 +109,5 @@ LRESULT CALLBACK App::WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 				return (LRESULT)1;
 	}
 	return DefWindowProc(hwnd, uMsg, wParam, lParam);
-	}
 }
 

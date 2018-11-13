@@ -15,7 +15,7 @@ public:
 	void Draw();
 	void Input(UINT, WPARAM, LPARAM);   //получает координату указателя мыши или сенсора
 	float getPadX();
-//private:
+private:
 	ball rych;
 	border bord;
 	pad PadInst;

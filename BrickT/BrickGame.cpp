@@ -3,6 +3,7 @@
 BrickGame::BrickGame(ID2D1HwndRenderTarget * _pRT)
 {
 	_DeltaTime=0;
+	PadInst.setBoundary(bord.x, bord.x1);
 	PadInst.set((bord.x1-bord.x)/2, (bord.y1-bord.y));
 	rych.setPos((PadInst.GetLeftX()+PadInst.GetRightX())/2, PadInst.GetY()-1-rych.GetRad());
 	_MouseXpos=(PadInst.GetLeftX()+PadInst.GetRightX())/2;
@@ -30,6 +31,12 @@ void BrickGame::Update(float DeltaTime)
 	DeltaX=fabs(rych.GetXspeed())*DeltaTime;			//Перемещение по X и Y за DeltaTime;
 	DeltaY=fabs(rych.GetYspeed())*DeltaTime;			//
 	DeltaPad=fabs(PadInst.GetSpeed())*DeltaTime;		//Перемещение платформы	
+
+	PadInst.SetSpeed((_MouseXpos - PadInst.GetMidX()) * 2);
+	if (rych.isStick) {
+		rych.Stick(PadInst.GetSpeed(), PadInst.GetY());
+	}
+
 	
 	if(DeltaX>DeltaY)
 		MaxDelta=(int)DeltaX;
@@ -39,12 +46,10 @@ void BrickGame::Update(float DeltaTime)
 	MaxDelta+=1;
 
 	for (int i = 1; i <= MaxDelta; ++i){
+	
 		rych.UpdatePosition(MaxDelta, DeltaTime);
-		PadInst.SetSpeed((_MouseXpos-PadInst.GetMidX())*2);
 		PadInst.UpdatePosition(MaxDelta, DeltaTime, bord.x, bord.x1);
-		if (rych.isStick) {
-			rych.Stick(PadInst.GetSpeed(), PadInst.GetY());
-		}
+		
 	
 
 
@@ -91,7 +96,7 @@ void BrickGame::Update(float DeltaTime)
 		}
 
 		// pad
-		if (rych.GetY() + rych.GetRad() >= PadInst.GetY() && rych.GetX() >= PadInst.GetLeftX() && rych.GetX() <= PadInst.GetRightX()){
+		if (rych.GetY() + rych.GetRad() >= PadInst.GetY() && rych.GetX() >= PadInst.GetLeftX() && rych.GetX() <= PadInst.GetRightX() && !rych.isStick){
 			//if(abs((abs(rych.GetXspeed())+(abs(PadInst.GetSpeed())/4))/rych.GetFullSpeed()) <=0.866)
 				rych.SetXspeed(rych.GetXspeed()+PadInst.GetSpeed()/4);
 			//else

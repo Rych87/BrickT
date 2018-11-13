@@ -8,9 +8,13 @@ public:
 	border();
 	~border();
 	POINT getStartPad();
-	int x, y, x1, y1;
 	POINT st;
 	void draw(HDC);
 	void draw(ID2D1HwndRenderTarget *);
+	int getLeft();
+	int getRight();
+	int getTop();
+	int getBottom();
+	int x, y, x1, y1;
 };
 
