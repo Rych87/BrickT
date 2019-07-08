@@ -4,118 +4,118 @@
 
 ball::ball(int R, float x, float y)
 {
-	_Size = R;
-	_X = x;
-	_Y = y;
-	_xS = 0;
-	_yS = 0;
-	_S=300;
+	size = R;
+	ball::x = x;
+	ball::y = y;
+	xS = 0;
+	yS = 0;
+	S=300;
 }
 
 float ball::GetXspeed()
 {
-	return _xS;
+	return xS;
 }
 
 float ball::GetYspeed()
 {
-	return _yS;
+	return yS;
 }
 
 void ball::SetXspeed(float DS)
 {
-	if(fabs(DS/_S)>=0.866)
-		_xS = _S*0.866*(DS/fabs(DS));
-	else if(fabs(DS/_S)<=0.258 && _xS!=0)
-		_xS = _S*0.258*(DS/fabs(DS));
-	else if (_xS==0)
-		_xS = _S*0.258;
+	if(fabs(DS/S)>=0.866)
+		xS = S*0.866*(DS/fabs(DS));
+	else if(fabs(DS/S)<=0.258 && xS!=0)
+		xS = S*0.258*(DS/fabs(DS));
+	else if (xS==0)
+		xS = S*0.258;
 	else
-		_xS=DS;
-	_yS = sqrt(_S*_S - _xS*_xS);
+		xS=DS;
+	yS = sqrt(S*S - xS*xS);
 }
 
 void ball::SetYspeed(int S)
 {
-	_yS=S;
-	_xS = sqrt(_S*_S - _yS*_yS);
+	yS=S;
+	xS = sqrt(S*S - yS*yS);
 }
 
 void ball::ReverseX()
 {
-	_xS=-_xS;
+	xS=-xS;
 }
 
 void ball::ReverseY()
 {
-	_yS=-_yS;
+	yS=-yS;
 }
 int ball::GetX()
 {
-	return (int)_X;
+	return (int)x;
 }
 
 int ball::GetY()
 {
-	return (int)_Y;
+	return (int)y;
 }
 int ball::GetRad()
 {
-	return _Size;
+	return size;
 }
 void ball::draw(HDC hdc)
 {
-	Ellipse(hdc, _X-_Size, _Y-_Size, _X+_Size, _Y+_Size);
+	Ellipse(hdc, x-size, y-size, x+size, y+size);
 }
 
 void ball::draw(ID2D1HwndRenderTarget * pRT)
 {
 	ID2D1SolidColorBrush * Brush;
 	pRT->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Black, 1.0f), &Brush);
-	pRT->DrawEllipse(D2D1::Ellipse(D2D1::Point2F((int)_X,(int)_Y),_Size,_Size), Brush, 1.0, 0);
+	pRT->DrawEllipse(D2D1::Ellipse(D2D1::Point2F((int)x,(int)y),size,size), Brush, 1.0, 0);
 	Brush->Release();
 }
 
-void ball::ySpeed(void)
+/*void ball::ySpeed(void)
 {
-	_yS = sqrt(_S*_S - _xS*_xS);
-}
+	yS = sqrt(S*S - xS*xS);
+}*/
 
 float ball::GetFullSpeed(void)
 {
-	_S = sqrt((float)(_yS*_yS + _xS*_xS));
-	return _S;
+	S = sqrt((float)(yS*yS + xS*xS));
+	return S;
 }
 void ball::UpdatePosition(int Step, float DeltaTime)
 {
-	_X+=_xS*DeltaTime/Step;
-	_Y+=_yS*DeltaTime/Step;
+	x+=xS*DeltaTime/Step;
+	y+=yS*DeltaTime/Step;
 }
 
 void ball::setPos(int x, int y)
 {
-	_X=x;
-	_Y=y;
+	ball::x=x;
+	ball::y=y;
 }
 void ball::Stick(int pS,int y)
 {
-	_yS=0;
-	_xS=pS;
-	_Y=y-1-_Size;
+	yS=0;
+	xS=pS;
+	ball::y=y-1-size;
 }
 void ball::Set_xS_pos()
 {
-	_xS=abs(_xS);
+	xS=abs(xS);
 }
 void ball::Set_xS_neg()
 {
-	_xS=-abs(_xS);
+	xS=-abs(xS);
 }
 void ball::Set_yS_pos()
 {
-	_yS=abs(_yS);
+	yS=abs(yS);
 }
 void ball::Set_yS_neg()
 {
-	_yS=-abs(_yS);
+	yS=-abs(yS);
 }

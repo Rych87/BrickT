@@ -34,12 +34,12 @@ public:
 
 	//temp
 
-	void ySpeed();
+	//void ySpeed();
 	bool isStick;
 private:
-	int _Size;
-	float _X, _Y;
-	int _xS, _yS;
-	float _S;
+	int size;
+	float x, y;
+	int xS, yS;
+	float S;
 };
 
